@@ -3,131 +3,143 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minimalist Horizontal Card</title>
+    <title>Minimalist Card Re-Layout</title>
     <style>
         /* --- RESET & SETUP --- */
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
 
         :root {
-            --primary-color: #18375d; /* Navy untuk teks/tombol */
-            --bg-color: #f8f9fa;      /* Background halaman sangat terang */
-            --card-bg: #ffffff;       /* Background kartu putih */
+            --primary-navy: #18375d; 
             --text-dark: #333333;
-            --text-grey: #888888;
-            --shadow-soft: 0 8px 24px rgba(0,0,0,0.05); /* Bayangan super halus */
-            --radius: 20px;
+            --text-grey: #999999;
+            --card-radius: 16px;
+            /* Shadow lebih pudar lagi supaya tidak terlihat seperti balok tebal */
+            --shadow-subtle: 0 4px 20px rgba(0,0,0,0.04); 
         }
 
         body {
-            background-color: var(--bg-color);
+            /* Background putih bersih, menghilangkan kesan "kotak di belakang" */
+            background-color: #ffffff; 
             display: flex;
             justify-content: center;
-            padding: 20px; 
+            padding: 20px 15px; /* Padding kiri-kanan sedikit dikurangi biar lebar maksimal */
             min-height: 100vh;
             color: var(--text-dark);
         }
 
         .wrapper {
             width: 100%;
-            max-width: 550px; /* Lebar optimal untuk mobile/lynk.id */
+            /* Lebar ditambah sesuai request (sebelumnya 550px) */
+            max-width: 620px; 
         }
 
         .product-grid {
             display: flex;
             flex-direction: column;
-            gap: 20px; 
+            gap: 24px; /* Jarak antar kartu lebih lega */
             width: 100%;
         }
 
-        /* --- PRODUCT CARD (MINIMALIST) --- */
+        /* --- PRODUCT CARD STYLE --- */
         .product-card {
             display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-            align-items: center;
-            background: var(--card-bg);
-            border-radius: var(--radius);
-            padding: 20px;
-            /* Kunci tampilan tidak "blocky" adalah shadow halus & border transparan */
-            box-shadow: var(--shadow-soft);
-            border: 1px solid rgba(0,0,0,0.02); 
-            position: relative;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            flex-direction: column; /* Ubah jadi kolom (atas ke bawah) */
+            background: #ffffff;
+            border-radius: var(--card-radius);
+            padding: 24px;
+            /* Border sangat tipis + shadow halus */
+            border: 1px solid #f0f0f0; 
+            box-shadow: var(--shadow-subtle);
             text-decoration: none;
-            overflow: hidden;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            position: relative;
         }
 
         .product-card:hover {
             transform: translateY(-2px);
-            box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            border-color: transparent;
         }
 
-        .card-content {
-            flex: 1;
-            padding-right: 15px; /* Jarak ke gambar */
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
+        /* --- BAGIAN ATAS: JUDUL (Full Width) --- */
+        .card-header {
+            width: 100%;
+            margin-bottom: 12px;
         }
 
         .product-name {
-            font-size: 1rem;
-            font-weight: 600;
-            color: var(--primary-color);
-            margin-bottom: 8px;
-            line-height: 1.4;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
+            font-size: 1.1rem; /* Sedikit lebih besar karena di atas */
+            font-weight: 700;
+            color: var(--primary-navy);
+            line-height: 1.3;
+        }
+
+        /* --- BAGIAN BAWAH: 2 KOLOM (Kiri: Info, Kanan: Gambar) --- */
+        .card-body {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end; /* Align bawah supaya tombol sejajar bawah gambar */
+            width: 100%;
+        }
+
+        /* Kolom Kiri (Harga & Button) */
+        .left-column {
+            display: flex;
+            flex-direction: column;
+            gap: 12px; /* Jarak antara harga dan tombol */
+            flex: 1; /* Mengisi ruang sisa */
+            padding-right: 15px; /* Jarak ke gambar */
         }
 
         .price-container {
-            margin-bottom: 12px;
             display: flex;
-            align-items: baseline;
-            gap: 8px;
+            flex-direction: column; /* Harga coret di atas harga diskon */
+            gap: 2px;
         }
 
         .original-price {
-            font-size: 0.75rem;
+            font-size: 0.75rem; /* Diperkecil */
             color: var(--text-grey);
             text-decoration: line-through;
         }
 
         .discount-price {
-            font-size: 1rem;
+            /* Font diperkecil sesuai request supaya tidak turun */
+            font-size: 1rem; 
             color: var(--text-dark);
             font-weight: 700;
+            letter-spacing: -0.5px;
         }
 
-        /* Tombol Minimalis */
         .btn-minimal {
             display: inline-flex;
             align-items: center;
             justify-content: center;
             padding: 8px 24px;
-            background-color: var(--primary-color);
-            color: #fff;
+            background-color: var(--primary-navy);
+            color: #ffffff;
             text-decoration: none;
-            font-size: 0.8rem;
-            font-weight: 500;
-            border-radius: 50px; /* Pill shape */
-            transition: opacity 0.2s;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border-radius: 8px; /* Radius tombol sedikit lebih kotak dari sebelumnya */
             width: fit-content;
+            transition: background 0.2s;
         }
 
         .btn-minimal:hover {
-            opacity: 0.9;
+            background-color: #0f243e;
         }
 
-        /* --- GAMBAR (Clean & Contained) --- */
-        .card-image-wrapper {
-            width: 100px;
-            height: 100px;
+        /* Kolom Kanan (Gambar) */
+        .right-column {
             flex-shrink: 0;
-            background: #f1f3f5;
-            border-radius: 16px;
+        }
+
+        .card-image-wrapper {
+            width: 90px;
+            height: 90px;
+            background: #f8f9fa;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -137,41 +149,40 @@
         .card-image {
             width: 100%;
             height: 100%;
-            object-fit: cover; /* Gambar mengisi kotak dengan rapi */
-            mix-blend-mode: multiply; /* Supaya background putih gambar menyatu (opsional) */
+            object-fit: cover;
         }
 
         /* --- COMING SOON STATE --- */
         .product-card.coming-soon {
             background: #fafafa;
-            border: 1px dashed #ddd; /* Border putus-putus halus */
+            border: 1px dashed #e0e0e0;
             box-shadow: none;
             cursor: default;
         }
-        
-        .product-card.coming-soon:hover {
-            transform: none;
-        }
 
         .product-card.coming-soon .product-name {
-            color: var(--text-grey);
+            color: #888;
         }
 
         .product-card.coming-soon .card-image-wrapper {
-            opacity: 0.5;
+            opacity: 0.4;
             filter: grayscale(100%);
         }
 
-        .label-coming-soon {
-            display: inline-block;
+        .label-cs {
+            font-size: 0.75rem;
+            color: #999;
+            background: #eee;
             padding: 6px 12px;
-            background-color: #eee;
-            color: #888;
-            font-size: 0.7rem;
-            font-weight: 600;
             border-radius: 6px;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
+            width: fit-content;
+            font-weight: 600;
+        }
+
+        /* Responsive Fix untuk layar sangat kecil */
+        @media (max-width: 360px) {
+            .product-name { font-size: 1rem; }
+            .card-image-wrapper { width: 70px; height: 70px; }
         }
 
     </style>
@@ -182,32 +193,49 @@
         <div class="product-grid">
             
             <div class="product-card">
-                <div class="card-content">
+                <div class="card-header">
                     <div class="product-name">1 on 1 Build Personal Branding on Threads</div>
-                    <div class="price-container">
-                        <span class="original-price">Rp 500.000</span>
-                        <span class="discount-price">Rp 249.900</span>
-                    </div>
-                    <a href="https://lynk.id/ajengwahys/rz33nno42qzr" target="_blank" class="btn-minimal">Detail</a>
                 </div>
-                <div class="card-image-wrapper">
-                    <img src="https://cdn.lynkid.my.id/draft-products/14-12-2025/1765721749180_1962629.png" alt="Produk" class="card-image">
+
+                <div class="card-body">
+                    <div class="left-column">
+                        <div class="price-container">
+                            <span class="original-price">Rp 500.000</span>
+                            <span class="discount-price">Rp 249.900</span>
+                        </div>
+                        <a href="https://lynk.id/ajengwahys/rz33nno42qzr" target="_blank" class="btn-minimal">Detail</a>
+                    </div>
+
+                    <div class="right-column">
+                        <div class="card-image-wrapper">
+                            <img src="https://cdn.lynkid.my.id/draft-products/14-12-2025/1765721052821_7212897.png" alt="Produk" class="card-image">
+                        </div>
+                    </div>
                 </div>
             </div>
 
             <div class="product-card coming-soon">
-                <div class="card-content">
-                    <div class="product-name">(Upcoming)</div>
-                    <div class="price-container">
-                        <span class="discount-price" style="color: transparent; user-select: none;">-</span>
-                    </div>
-                    <div class="label-coming-soon">Coming Soon</div>
+                <div class="card-header">
+                    <div class="product-name">Content Strategy Masterclass (Upcoming)</div>
                 </div>
-                <div class="card-image-wrapper">
-                   <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#aaa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-                    </svg>
+
+                <div class="card-body">
+                    <div class="left-column">
+                        <div class="price-container">
+                             <span class="original-price" style="opacity:0">-</span>
+                            <span class="discount-price" style="opacity:0">-</span>
+                        </div>
+                        <div class="label-cs">COMING SOON</div>
+                    </div>
+
+                    <div class="right-column">
+                        <div class="card-image-wrapper">
+                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#aaa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                            </svg>
+                        </div>
+                    </div>
                 </div>
             </div>
 
